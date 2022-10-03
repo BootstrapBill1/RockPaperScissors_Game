@@ -1,22 +1,22 @@
 const buttons = document.querySelectorAll("div.buttons > button");
 const container = document.querySelector("body");
-const score = document.createElement("div");
-score.style.display = "flex";
-score.style.justifyContent = "space-around";
-score.style.fontSize = "20px";
-score.style.backgroundColor = "green";
-score.style.fontWeight ="Bold";
-score.style.color = "white";
-score.classList.add("scores");
-const user = document.createElement("div");
-const computer = document.createElement("div");
-user.classList.add("user");
-computer.classList.add("computer");
-user.textContent = "User: 0";
-computer.textContent = "Computer: 0";
-score.appendChild(user);
-score.appendChild(computer);
-container.appendChild(score);
+const user = document.querySelector(".user");
+const computer = document.querySelector(".computer");
+const endPrompt = document.createElement("div");
+const playAgainSection = document.createElement("div");
+const playAgain = document.createElement("button");
+playAgainSection.appendChild(playAgain);
+playAgain.textContent = "Play Again?";
+playAgain.style.fontSize = "40px";
+playAgain.style.backgroundColor = "coral";
+playAgainSection.style.display = "flex";
+playAgainSection.style.justifyContent = "center"; 
+
+endPrompt.classList.add("endScreen");
+endPrompt.style.display = "flex";
+endPrompt.style.justifyContent = "center";
+endPrompt.style.fontSize = "40px";
+endPrompt.style.color = "white";
 
 
 let timesPlayed = 0;
@@ -30,10 +30,25 @@ buttons.forEach((button) => {
 
 function play(string){
     game(string, ++timesPlayed);
-
-
 }
 
+function restart(){
+    timesPlayed = 0;
+    userScore = 0;
+    computerScore = 0;
+    user.textContent = "You: " + userScore;
+    computer.textContent = "Computer: " + computerScore;
+    playAgainSection.remove();
+    endPrompt.remove();
+    buttons.forEach((button) => {
+        button.disabled = false;
+    });
+}
+
+
+playAgain.addEventListener('click', () => {
+    restart()
+})
 
 
 
@@ -106,12 +121,18 @@ function game(playerSelection, timesPlayed){
     console.log(playerScore);
     if (playerScore.slice(0,7) == "You Win"){
         userScore++;
-        user.textContent = "User: " + userScore;
+        user.textContent = "You: " + userScore;
+        if(userScore == 3){
+            endGame(userScore, computerScore);
+        }
 
     }
     else if (playerScore.slice(0,8) == "You Lose"){
         computerScore++;
         computer.textContent = "Computer: " + computerScore;
+        if(computerScore == 3){
+            endGame(userScore,computerScore);
+        }
     }
 
     if(timesPlayed == 5){
@@ -120,11 +141,25 @@ function game(playerSelection, timesPlayed){
 }
 
 function endGame(userScore, computerScore){
+
+    buttons.forEach((button) => {
+        button.disabled = true;
+    });
+
     if(userScore > computerScore){
         console.log("You win the game");
+        endPrompt.textContent = "You Win The Game"
     }
     else if(userScore < computerScore){
         console.log("Computer wins the game");
+        endPrompt.textContent = "You lose!"
+    }
+    else {
+        console.log("Neither win");
+        endPrompt.textContent = "It's a tie!"
     }
     console.log("You: " + userScore + " Computer: " + computerScore);
+    container.appendChild(endPrompt);
+    container.appendChild(playAgainSection);
+    
 }
