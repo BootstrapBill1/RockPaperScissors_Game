@@ -5,10 +5,12 @@ const computer = document.querySelector(".computer");
 const endPrompt = document.createElement("div");
 const playAgainSection = document.createElement("div");
 const playAgain = document.createElement("button");
+
 playAgainSection.appendChild(playAgain);
 playAgain.textContent = "Play Again?";
 playAgain.style.fontSize = "40px";
-playAgain.style.backgroundColor = "coral";
+playAgain.style.backgroundColor = "#038C3E";
+playAgain.style.margin = "0";
 playAgainSection.style.display = "flex";
 playAgainSection.style.justifyContent = "center"; 
 
