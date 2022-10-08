@@ -1,10 +1,14 @@
 const buttons = document.querySelectorAll("div.buttons > button");
 const container = document.querySelector("body");
+const interactBox = document.querySelector(".interactBox");
 const user = document.querySelector(".user");
 const computer = document.querySelector(".computer");
 const endPrompt = document.createElement("div");
 const playAgainSection = document.createElement("div");
 const playAgain = document.createElement("button");
+const moveStatus = document.createElement("div");
+const userStatus = document.createElement("div");
+const compStatus = document.createElement("div");
 
 playAgainSection.appendChild(playAgain);
 playAgain.textContent = "Play Again?";
@@ -19,6 +23,19 @@ endPrompt.style.display = "flex";
 endPrompt.style.justifyContent = "center";
 endPrompt.style.fontSize = "40px";
 endPrompt.style.color = "white";
+
+
+moveStatus.classList.add("moveStatus");
+userStatus.classList.add("userStatus");
+compStatus.classList.add("compStatus");
+moveStatus.appendChild(userStatus);
+moveStatus.appendChild(compStatus);
+interactBox.appendChild(moveStatus);
+moveStatus.style.fontSize = "30px";
+moveStatus.style.display = "flex";
+moveStatus.style.flexDirection = "column";
+moveStatus.style.alignItems = "center";
+
 
 
 let timesPlayed = 0;
@@ -42,6 +59,7 @@ function restart(){
     computer.textContent = "Computer: " + computerScore;
     playAgainSection.remove();
     endPrompt.remove();
+    moveStatus.remove();
     buttons.forEach((button) => {
         button.disabled = false;
     });
@@ -50,6 +68,11 @@ function restart(){
 
 playAgain.addEventListener('click', () => {
     restart()
+    userStatus.textContent = "";
+    compStatus.textContent ="";
+    moveStatus.appendChild(userStatus);
+    moveStatus.appendChild(compStatus);
+    interactBox.appendChild(moveStatus);
 })
 
 
@@ -72,9 +95,10 @@ function getComputerChoice() {
 function playRound(playerSelection){
     let computerSelection = getComputerChoice();
     console.log("Computer: " + computerSelection);
-    //let playerSelection = prompt("Enter either Rock, Paper, Scissors:");
     playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
     console.log("User: " + playerSelection);
+    userStatus.textContent = "You chose: " + playerSelection;
+    compStatus.textContent = "Computer chose: " + computerSelection;
     if(playerSelection == "Rock"){
         if(computerSelection == "Rock"){
             return "Its a tie";
